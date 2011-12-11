@@ -69,8 +69,13 @@ class FormatEmail extends Base
       validEmail = false
 
     # Check entire length of domain, max is 255 (the part of email address after the @) 
-    domainLength = email.substr atIndex+1, 255
-    if domainLength < 1 or domainLength > 255
+    domain = email.substr atIndex+1, 255
+    if domain < 1 or domain > 255
+      validEmail = false
+    
+    # Check to see if there are any invalid characters in domain
+    matches = domain.match(/[\w-\.]+/i)
+    if matches != domain
       validEmail = false
 
     if validEmail != null or validEmail != "" and typeof validEmail == "boolean"
@@ -82,7 +87,7 @@ class FormatEmail extends Base
     super passOutput
 
 fe = new FormatEmail "Format Email Class"
-email = "atljeremy@fullsail.com"
+email = "atljeremy@fulls*$%!ail.c$^&*om"
 emailVerified = fe.verifyEmail email
 if emailVerified
   fe.log("The email address #{email} does follow the correct format")

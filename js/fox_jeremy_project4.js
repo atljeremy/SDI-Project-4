@@ -45,7 +45,7 @@
       FormatEmail.__super__.constructor.apply(this, arguments);
     }
     FormatEmail.prototype.verifyEmail = function(email) {
-      var atIndex, domainLength, lastDotIndex, localLength, tldLength, validEmail;
+      var atIndex, domain, lastDotIndex, localLength, matches, tldLength, validEmail;
       validEmail = true;
       atIndex = email.indexOf("@");
       lastDotIndex = email.lastIndexOf(".");
@@ -63,8 +63,12 @@
       if (localLength < 1 || localLength > 64) {
         validEmail = false;
       }
-      domainLength = email.substr(atIndex + 1, 255);
-      if (domainLength < 1 || domainLength > 255) {
+      domain = email.substr(atIndex + 1, 255);
+      if (domain < 1 || domain > 255) {
+        validEmail = false;
+      }
+      matches = domain.match(/[\w-\.]+/i);
+      if (matches !== domain) {
         validEmail = false;
       }
       if (validEmail !== null || validEmail !== "" && typeof validEmail === "boolean") {
@@ -79,7 +83,7 @@
     return FormatEmail;
   })();
   fe = new FormatEmail("Format Email Class");
-  email = "atljeremy@fullsail.com";
+  email = "atljeremy@fulls*$%!ail.c$^&*om";
   emailVerified = fe.verifyEmail(email);
   if (emailVerified) {
     fe.log("The email address " + email + " does follow the correct format");
