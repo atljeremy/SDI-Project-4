@@ -49,34 +49,35 @@ class FormatEmail extends Base
     validEmail = true
     atIndex = email.indexOf "@"
     lastDotIndex = email.lastIndexOf "."
-    
+
+    # Check to make sure we have a top level domain (.com, .org, .net, .mobi, .ru, etc)
+    if lastDotIndex == -1
+      validEmail = false
+
+    # check length of top level domain (com, org, net, mobi, ru, etc). Minimum should be 2 charactors, max should be 4.
+    tldLength = email.substr lastDotIndex+1, 4
+    if tldLength < 2 || tldLength > 4
+      validEmail = false
+
     # Check to make sure we find an "@" in the email address
     if atIndex < 0 or atIndex == -1
       validEmail = false
 
     # Check length of local, max is 64 characters (the part of email address before the @)    
     localLength = email.substr 0, atIndex
-    console.log localLength
     if localLength < 1 or localLength > 64
       validEmail = false
-      
-    # check length of top level domain (com, org, net, mobi, ru, etc). Minimum should be 2 charactors, max should be 4.
-    tldLength = email.substr lastDotIndex+1, 4
-    console.log tldLength
-    if tldLength < 2 || tldLength > 4
-      validEmail = false
-      
+
     # Check entire length of domain, max is 255 (the part of email address after the @) 
     domainLength = email.substr atIndex+1, 255
-    console.log domainLength
     if domainLength < 1 or domainLength > 255
       validEmail = false
-    
+
     if validEmail != null or validEmail != "" and typeof validEmail == "boolean"
       return validEmail
     else
       console.log "An error has occurred!"
-      
+
   log: (passOutput) ->
     super passOutput
 
@@ -181,15 +182,26 @@ else
 ##################################################################
 class FormatToInt extends Base
 
-  makeInt: (arg) ->  
-    if typeof int == "number"
-      super "The String \"#{string}\" contains a number in String format. Here is the proper integer that has been parsed out of the String, #{int}"
+  makeInt: (arg) ->
+    if typeof arg == "string"
+      int = parseInt arg
+      if typeof int == "number"
+        return int
+      else
+        return "error"
     else
-      super "The String number could not be pasred to an integer"
-  log: ->
+      return "no int"
+      
+  log: (passOutput) ->
+    super passOutput
 
-fs = new FormatToInt "Format To Integer Class"
+fti = new FormatToInt "Format To Integer Class"
 string = "345 is a string number"
-int = parseInt string
-fs.log()
+parseIntVerified = fti.makeInt string
+if parseIntVerified == "no int"
+  fti.log("The String \"#{string}\" doesn't contain any numbers to be parsed.")
+else if parseIntVerified == "error"
+  fti.log("An error was encountered while trying to parse the string, \"#{string}\"")
+else if parseIntVerified != "error"
+  fti.log("The String \"#{string}\" contains a number in String format. Here is the proper integer that has been parsed out of the String: #{parseIntVerified}")
 

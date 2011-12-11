@@ -1,5 +1,5 @@
 (function() {
-  var Base, FormatEmail, FormatPhone, FormatSeperator, FormatTitleCase, FormatToInt, FormatURL, email, emailVerified, fe, fp, fs, ftc, furl, int, phone, phoneVerified, seperateVerified, string, titleCaseVerified, url, urlVerified;
+  var Base, FormatEmail, FormatPhone, FormatSeperator, FormatTitleCase, FormatToInt, FormatURL, email, emailVerified, fe, fp, fs, ftc, fti, furl, parseIntVerified, phone, phoneVerified, seperateVerified, string, titleCaseVerified, url, urlVerified;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -49,21 +49,21 @@
       validEmail = true;
       atIndex = email.indexOf("@");
       lastDotIndex = email.lastIndexOf(".");
+      if (lastDotIndex === -1) {
+        validEmail = false;
+      }
+      tldLength = email.substr(lastDotIndex + 1, 4);
+      if (tldLength < 2 || tldLength > 4) {
+        validEmail = false;
+      }
       if (atIndex < 0 || atIndex === -1) {
         validEmail = false;
       }
       localLength = email.substr(0, atIndex);
-      console.log(localLength);
       if (localLength < 1 || localLength > 64) {
         validEmail = false;
       }
-      tldLength = email.substr(lastDotIndex + 1, 4);
-      console.log(tldLength);
-      if (tldLength < 2 || tldLength > 4) {
-        validEmail = false;
-      }
       domainLength = email.substr(atIndex + 1, 255);
-      console.log(domainLength);
       if (domainLength < 1 || domainLength > 255) {
         validEmail = false;
       }
@@ -169,17 +169,31 @@
       FormatToInt.__super__.constructor.apply(this, arguments);
     }
     FormatToInt.prototype.makeInt = function(arg) {
-      if (typeof int === "number") {
-        return FormatToInt.__super__.makeInt.call(this, "The String \"" + string + "\" contains a number in String format. Here is the proper integer that has been parsed out of the String, " + int);
+      var int;
+      if (typeof arg === "string") {
+        int = parseInt(arg);
+        if (typeof int === "number") {
+          return int;
+        } else {
+          return "error";
+        }
       } else {
-        return FormatToInt.__super__.makeInt.call(this, "The String number could not be pasred to an integer");
+        return "no int";
       }
     };
-    FormatToInt.prototype.log = function() {};
+    FormatToInt.prototype.log = function(passOutput) {
+      return FormatToInt.__super__.log.call(this, passOutput);
+    };
     return FormatToInt;
   })();
-  fs = new FormatToInt("Format To Integer Class");
+  fti = new FormatToInt("Format To Integer Class");
   string = "345 is a string number";
-  int = parseInt(string);
-  fs.log();
+  parseIntVerified = fti.makeInt(string);
+  if (parseIntVerified === "no int") {
+    fti.log("The String \"" + string + "\" doesn't contain any numbers to be parsed.");
+  } else if (parseIntVerified === "error") {
+    fti.log("An error was encountered while trying to parse the string, \"" + string + "\"");
+  } else if (parseIntVerified !== "error") {
+    fti.log("The String \"" + string + "\" contains a number in String format. Here is the proper integer that has been parsed out of the String: " + parseIntVerified);
+  }
 }).call(this);
