@@ -23,6 +23,9 @@ Does a string follow a 123-456-7890 pattern like a phone number?
 ###
 class FormatPhone extends Base
   
+  ###
+  PUBLIC METHODS
+  ###
   verifyPhone: (phone) ->
     validPhone        = true
     firstDash         = phone.indexOf "-"
@@ -100,7 +103,29 @@ else
 Does a string follow an aaa@bbb.ccc pattern like an email address?
 ###
 class FormatEmail extends Base
+
+  ###
+  PRIVATE VARIABLES
+  ###
+  ###
+  Advanced regex to validate email address
+  This regex was originally found online at: http://www.regular-expressions.info/email.html
+  This regex does the following…
+  ###
+  OPERATOR = ///
+    \b            # \b = Matches a word boundry position such as white space or the beginning or end of a string.
+    [A-Z0-9._%+-] # [A-Z0-9._%+-] = This is a character set match in which matchs characters A-Z, 0-9, ., _, %, -. The + in this make this match one or more of the preceding values.
+    +@            # +@ = The + here matches previous token 1 or more times. The @ is a macther used to find the "@" in an email address.
+    [A-Z0-9.-]    # [A-Z0-9.-] = This is a character set match in which matches characters A_Z, 0-9, ., -.
+    +\.           # +\. = The + here matches previous token 1 or more times. The \. matches a ".".
+    [A-Z]         # [A-Z] = This has a characters set matcher "[A-Z]"
+    {2,4}         # {2,4} = The "{2-4}" will match previous token between 2 and 4 times (ru, com, info, etc)
+    \b            # \b = Matches a word boundry position such as white space or the beginning or end of a string.
+  ///i            # i = This makes the match case insensitive.
   
+  ###
+  PUBLIC METHODS
+  ###
   verifyEmail: (email) ->
     validEmail   = true
     atIndex      = email.indexOf "@"
@@ -133,22 +158,6 @@ class FormatEmail extends Base
     ###
     domain = email.substr atIndex+1, 255
     validEmail = false if domain < 1 or domain > 255
-    
-    ###
-    Advanced regex to validate email address
-    This regex was originally found online at: http://www.regular-expressions.info/email.html
-    This regex does the following…
-    ###
-    OPERATOR = ///
-      \b            # \b = Matches a word boundry position such as white space or the beginning or end of a string.
-      [A-Z0-9._%+-] # [A-Z0-9._%+-] = This is a character set match in which matchs characters A-Z, 0-9, ., _, %, -. The + in this make this match one or more of the preceding values.
-      +@            # +@ = The + here matches previous token 1 or more times. The @ is a macther used to find the "@" in an email address.
-      [A-Z0-9.-]    # [A-Z0-9.-] = This is a character set match in which matches characters A_Z, 0-9, ., -.
-      +\.           # +\. = The + here matches previous token 1 or more times. The \. matches a ".".
-      [A-Z]         # [A-Z] = This has a characters set matcher "[A-Z]"
-      {2,4}         # {2,4} = The "{2-4}" will match previous token between 2 and 4 times (ru, com, info, etc)
-      \b            # \b = Matches a word boundry position such as white space or the beginning or end of a string.
-    ///i            # i = This makes the match case insensitive.
 
     matches = email.match(OPERATOR)
     console.log matches.length
@@ -179,22 +188,28 @@ Is the string a URL? (Does it start with http: or https:?)
 ###
 class FormatURL extends Base
 
+  ###
+  PRIVATE VARIABLES
+  ###
+  ###
+  Advanced regex to validate a URL
+  This regex was originally found online at: http://regexlib.com/Search.aspx?k=url&c=0&m=0&ps=20&p=3
+  This regex does the following…
+  ###
+  OPERATOR = ///
+  (http://|https://)(www\.)
+  ?
+  ([^\.]+)
+  \.
+  (\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))
+  $
+  ///gim
+
+  ###
+  PUBLIC METHODS
+  ###
   verifyURL: (url) ->
     validURL = false
-
-    ###
-    Advanced regex to validate a URL
-    This regex was originally found online at: http://regexlib.com/Search.aspx?k=url&c=0&m=0&ps=20&p=3
-    This regex does the following…
-    ###
-    OPERATOR = ///
-    (http://|https://)(www\.)
-    ?
-    ([^\.]+)
-    \.
-    (\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))
-    $
-    ///gim
 
     matches = url.match(OPERATOR)
     for match in matches

@@ -34,6 +34,9 @@
     function FormatPhone() {
       FormatPhone.__super__.constructor.apply(this, arguments);
     }
+    /*
+      PUBLIC METHODS
+      */
     FormatPhone.prototype.verifyPhone = function(phone) {
       var dashes, firstDash, firstThreeDigits, lastDash, lastFourDigits, match, matches, secondThreeDigits, validPhone, _i, _len;
       validPhone = true;
@@ -122,12 +125,25 @@
   Does a string follow an aaa@bbb.ccc pattern like an email address?
   */
   FormatEmail = (function() {
+    var OPERATOR;
     __extends(FormatEmail, Base);
     function FormatEmail() {
       FormatEmail.__super__.constructor.apply(this, arguments);
     }
+    /*
+      PRIVATE VARIABLES
+      */
+    /*
+      Advanced regex to validate email address
+      This regex was originally found online at: http://www.regular-expressions.info/email.html
+      This regex does the following…
+      */
+    OPERATOR = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i;
+    /*
+      PUBLIC METHODS
+      */
     FormatEmail.prototype.verifyEmail = function(email) {
-      var OPERATOR, atIndex, domain, lastDotIndex, localLength, matches, tldLength, validEmail;
+      var atIndex, domain, lastDotIndex, localLength, matches, tldLength, validEmail;
       validEmail = true;
       atIndex = email.indexOf("@");
       lastDotIndex = email.lastIndexOf(".");
@@ -164,12 +180,6 @@
       if (domain < 1 || domain > 255) {
         validEmail = false;
       }
-      /*
-          Advanced regex to validate email address
-          This regex was originally found online at: http://www.regular-expressions.info/email.html
-          This regex does the following…
-          */
-      OPERATOR = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i;
       matches = email.match(OPERATOR);
       console.log(matches.length);
       if (matches.length === 0) {
@@ -198,19 +208,26 @@
   Is the string a URL? (Does it start with http: or https:?)
   */
   FormatURL = (function() {
+    var OPERATOR;
     __extends(FormatURL, Base);
     function FormatURL() {
       FormatURL.__super__.constructor.apply(this, arguments);
     }
+    /*
+      PRIVATE VARIABLES
+      */
+    /*
+      Advanced regex to validate a URL
+      This regex was originally found online at: http://regexlib.com/Search.aspx?k=url&c=0&m=0&ps=20&p=3
+      This regex does the following…
+      */
+    OPERATOR = /(http:\/\/|https:\/\/)(www\.)?([^\.]+)\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))$/gim;
+    /*
+      PUBLIC METHODS
+      */
     FormatURL.prototype.verifyURL = function(url) {
-      var OPERATOR, match, matches, validURL, _i, _len;
+      var match, matches, validURL, _i, _len;
       validURL = false;
-      /*
-          Advanced regex to validate a URL
-          This regex was originally found online at: http://regexlib.com/Search.aspx?k=url&c=0&m=0&ps=20&p=3
-          This regex does the following…
-          */
-      OPERATOR = /(http:\/\/|https:\/\/)(www\.)?([^\.]+)\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))$/gim;
       matches = url.match(OPERATOR);
       for (_i = 0, _len = matches.length; _i < _len; _i++) {
         match = matches[_i];
