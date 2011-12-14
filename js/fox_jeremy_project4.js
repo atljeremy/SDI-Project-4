@@ -264,6 +264,9 @@
     function FormatTitleCase() {
       FormatTitleCase.__super__.constructor.apply(this, arguments);
     }
+    /*
+      PUBLIC METHODS
+      */
     FormatTitleCase.prototype.makeTitleCase = function(arg) {
       var string, word, words, _i, _len;
       string = "";
@@ -297,6 +300,9 @@
     function FormatSeparator() {
       FormatSeparator.__super__.constructor.apply(this, arguments);
     }
+    /*
+      PUBLIC METHODS
+      */
     FormatSeparator.prototype.makeSeperated = function(arg) {
       var newString;
       newString = arg.replace(/[,]/g, '/');
@@ -328,6 +334,9 @@
     function FormatToInt() {
       FormatToInt.__super__.constructor.apply(this, arguments);
     }
+    /*
+      PUBLIC METHODS
+      */
     FormatToInt.prototype.makeInt = function(arg) {
       var int;
       if (typeof arg === "string") {

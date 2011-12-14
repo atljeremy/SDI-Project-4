@@ -243,6 +243,9 @@ letter of each word)
 ###
 class FormatTitleCase extends Base
 
+  ###
+  PUBLIC METHODS
+  ###
   makeTitleCase: (arg) ->
     string = ""
     words = arg.split " "
@@ -273,6 +276,9 @@ separator changed to the second: "a,b,c" + "," + "/" → "a/b/c".
 ###
 class FormatSeparator extends Base
 
+  ###
+  PUBLIC METHODS
+  ###
   makeSeperated: (arg) ->
     newString = arg.replace(/[,]/g, '/')
     
@@ -302,6 +308,9 @@ as an actual Number, such as 42.
 ###
 class FormatToInt extends Base
 
+  ###
+  PUBLIC METHODS
+  ###
   makeInt: (arg) ->
     if typeof arg == "string"
       int = parseInt arg
