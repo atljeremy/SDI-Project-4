@@ -8,7 +8,7 @@
   /*
   Base Class
   */
-  var Base, FormatEmail, FormatPhone, FormatSeparator, FormatTitleCase, FormatToInt, FormatURL, email, emailVerified, fe, fp, fs, ftc, fti, furl, parseIntVerified, phone, phoneVerified, seperateVerified, string, titleCaseVerified, url, urlVerified;
+  var Base, FormatEmail, FormatPhone, FormatSeparator, FormatTitleCase, FormatToInt, FormatURL, email, emailVerified, fe, fp, fs, ftc, fti, furl, parseIntVerified, phone, phoneVerified, seperateVerified, string, stringWithUrl, titleCaseVerified, urlVerified;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -127,7 +127,7 @@
       FormatEmail.__super__.constructor.apply(this, arguments);
     }
     FormatEmail.prototype.verifyEmail = function(email) {
-      var atIndex, domain, lastDotIndex, localLength, matches, tldLength, validEmail;
+      var OPERATOR, atIndex, domain, lastDotIndex, localLength, matches, tldLength, validEmail;
       validEmail = true;
       atIndex = email.indexOf("@");
       lastDotIndex = email.lastIndexOf(".");
@@ -165,10 +165,14 @@
         validEmail = false;
       }
       /*
-          Check to see if there are any invalid characters in domain
+          Advanced regex to validate email address
+          This regex was originally found online at: http://www.regular-expressions.info/email.html
+          This regex does the following…
           */
-      matches = domain.match(/[\w-\.]+/i);
-      if (matches !== domain) {
+      OPERATOR = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i;
+      matches = email.match(OPERATOR);
+      console.log(matches.length);
+      if (matches.length === 0) {
         validEmail = false;
       }
       if (validEmail !== null || validEmail !== "" && typeof validEmail === "boolean") {
@@ -183,7 +187,7 @@
     return FormatEmail;
   })();
   fe = new FormatEmail("Format Email Class");
-  email = "atljeremy@fulls*$%!ail.c$^&*om";
+  email = "atljeremy@fullsail.edu";
   emailVerified = fe.verifyEmail(email);
   if (emailVerified) {
     fe.log("The email address " + email + " does follow the correct format");
@@ -199,8 +203,27 @@
       FormatURL.__super__.constructor.apply(this, arguments);
     }
     FormatURL.prototype.verifyURL = function(url) {
-      var validURL;
-      return validURL = true;
+      var OPERATOR, match, matches, validURL, _i, _len;
+      validURL = false;
+      /*
+          Advanced regex to validate a URL
+          This regex was originally found online at: http://regexlib.com/Search.aspx?k=url&c=0&m=0&ps=20&p=3
+          This regex does the following…
+          */
+      OPERATOR = /(http:\/\/|https:\/\/)(www\.)?([^\.]+)\.(\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))$/gim;
+      matches = url.match(OPERATOR);
+      for (_i = 0, _len = matches.length; _i < _len; _i++) {
+        match = matches[_i];
+        if (match.length !== null && match.length > 0) {
+          console.log(match);
+          validURL = true;
+        }
+      }
+      if (validURL !== null || validURL !== "" && typeof validURL === "boolean") {
+        return validURL;
+      } else {
+        return console.log("An error has occurred!");
+      }
     };
     FormatURL.prototype.log = function(passOutput) {
       return FormatURL.__super__.log.call(this, passOutput);
@@ -208,12 +231,12 @@
     return FormatURL;
   })();
   furl = new FormatURL("Format URL Class");
-  url = "http://www.google.com";
-  urlVerified = furl.verifyURL(url);
+  stringWithUrl = "This is a test http://www.google.com";
+  urlVerified = furl.verifyURL(stringWithUrl);
   if (urlVerified) {
-    fp.log("The URL " + url + " does follow the correct pattern");
+    furl.log("The String " + stringWithUrl + " does have a falid URL");
   } else {
-    fp.log("The URL " + url + " does not follow the correct pattern");
+    furl.log("The String " + stringWithUrl + " does not have a valid URL");
   }
   /*
   Title-case a string (split into words, then uppercase the first 
