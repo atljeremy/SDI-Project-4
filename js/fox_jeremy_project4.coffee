@@ -160,7 +160,6 @@ class FormatEmail extends Base
     validEmail = false if domain < 1 or domain > 255
 
     matches = email.match(OPERATOR)
-    console.log matches.length
     validEmail = false if matches.length == 0
 
     if validEmail != null or validEmail != "" and typeof validEmail == "boolean"
@@ -197,12 +196,14 @@ class FormatURL extends Base
   This regex does the following…
   ###
   OPERATOR = ///
-  (http://|https://)(www\.)
-  ?
-  ([^\.]+)
-  \.
-  (\w{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))
-  $
+  (http://|https://)(www\.)     # Matches http://, https://, and www.
+  ?                             # 
+  ([^\.]+)                      # 
+  \.                            # 
+  (\w{2}|(com|net|org|edu       # 
+  |int|mil|gov|arpa|biz|aero    # 
+  |name|coop|info|pro|museum))  # 
+  $                             # 
   ///gim
 
   ###
@@ -214,14 +215,13 @@ class FormatURL extends Base
     matches = url.match(OPERATOR)
     for match in matches
       if match.length != null and match.length > 0
-        console.log match
         validURL = true
         
     if validURL != null or validURL != "" and typeof validURL == "boolean"
       return validURL
     else
       console.log "An error has occurred!"
-          
+
   log: (passOutput) ->
     super passOutput
 

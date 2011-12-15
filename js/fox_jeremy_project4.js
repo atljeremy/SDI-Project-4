@@ -181,7 +181,6 @@
         validEmail = false;
       }
       matches = email.match(OPERATOR);
-      console.log(matches.length);
       if (matches.length === 0) {
         validEmail = false;
       }
@@ -232,7 +231,6 @@
       for (_i = 0, _len = matches.length; _i < _len; _i++) {
         match = matches[_i];
         if (match.length !== null && match.length > 0) {
-          console.log(match);
           validURL = true;
         }
       }
