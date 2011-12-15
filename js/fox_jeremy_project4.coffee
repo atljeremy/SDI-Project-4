@@ -197,11 +197,12 @@ class FormatURL extends Base
   ###
   OPERATOR = ///
   (http://|https://)(www\.)     # Matches http://, https://, and www.
-  ?                             # 
-  ([^\.]+)                      # 
-  \.                            # 
-  (\w{2}|(com|net|org|edu       # 
-  |int|mil|gov|arpa|biz|aero    # 
+  ?                             # Makes preceding token optional
+  ([^\.]+)                      # Character set not matching \. one or more times
+  \.                            # matches .
+  (\w{2}|                       # matches any word or character exactly two times,
+  (com|net|org|edu              # 
+  |int|mil|gov|arpa|biz|aero    # matches many different types of tld's (top level domains)
   |name|coop|info|pro|museum))  # 
   $                             # 
   ///gim
